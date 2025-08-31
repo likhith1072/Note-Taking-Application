@@ -1,30 +1,21 @@
-import { useEffect, useState } from "react"
+import { BrowserRouter ,Routes,Route} from 'react-router-dom'
+
+import Home from './pages/Home.tsx'
+import SignIn from './pages/SignIn.tsx'
+import SignUp from './pages/SignUp.tsx'
+import { ToastContainer} from 'react-toastify';
 
 
-function App() {
 
-  const [notes, setNotes] = useState<string>("fd");
-
-  useEffect(() => {
-    // Fetch data from the API
-    const fetchData = async () => {
-      const response = await fetch("/api");
-      const data = await response.json();
-      console.log(data);
-      setNotes(data);
-    };
-
-    fetchData();
-  }, []);
-
+export default function App() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold">
-        App 
-        {notes}
-      </h1>
-    </div>
+    <BrowserRouter>
+      <ToastContainer />    
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/signup" element={<SignUp />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
-
-export default App

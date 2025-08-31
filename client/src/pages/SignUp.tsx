@@ -1,30 +1,44 @@
 import { useState } from "react";
 import { toast } from 'react-toastify';
+import { useUser } from "../context/UserContext";
+import { useSignup } from "../context/SignupContext";
+import { useNavigate } from "react-router-dom";
 
 export default function SignupPage() {
-    const [name, setName] = useState<string>("");
-    const [dob, setDob] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
+     const navigate = useNavigate();
+      const { user, setUser } = useUser();
+  const { signup, setSignup, resetSignup } = useSignup();
+
+
+    const [name, setName] = useState<string>(signup.name || "");
+    const [dob, setDob] = useState<string>(signup.dob || "");
+    const [email, setEmail] = useState<string>(signup.email || "");
+    const [verifyingEmail, setVerifyingEmail] = useState<boolean>(signup.verifyingEmail || false);
     const [OTP, setOTP] = useState<string>("");
-    const [verifyingEmail, setVerifyingEmail] = useState<boolean>(false);
 
    const [loading,setLoading]=useState<boolean>(false);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (verifyingEmail) {
+            navigate("/");
             const payload = { email, OTP };
             console.log("Verify OTP payload:", payload);
             setVerifyingEmail(false);
             // send to backend for verifying email
+            setUser({ id: "123", name: name, email: email, dob: dob });
+            // resetSignup();
         }
         else {
+            navigate("/")
             if(!name || !dob || !email){
                 return toast.error('Please fill out all fields.');
             }
             const payload = { name, dob, email };
             console.log("Sign Up payload:", payload);
             setVerifyingEmail(true);
+            setSignup({name,dob,email,verifyingEmail:true});
+
             // send to backend for SignUp
         }
     }

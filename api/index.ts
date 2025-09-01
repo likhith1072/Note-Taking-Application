@@ -6,22 +6,21 @@ import authRoutes from "./routes/auth.route"; // remove `.ts` when importing
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import noteRoutes from "./routes/note.route"; 
+import path from 'path';
 
 dotenv.config();
 
 mongoose.connect(process.env.MONGO as string).then(()=>{console.log('Connected to mongoDB');}).catch((err)=>{console.log(err);}); 
 
-
-const app = express();
-
-// Example: dynamic origin setup (uncomment if you want per-env origins)
-// const origin = process.env.NODE_ENV === "production"
-//   ? "https://blogging-platform-with-dashboard.onrender.com"
-//   : "http://localhost:5173";
+const __dirname = path.resolve();
+const app=express();
+const origin = process.env.NODE_ENV === 'production'
+  ? 'FrontendWebsiteLink'
+  : 'http://localhost:5173';
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: origin,
     credentials: true, // allows cookies/headers
   })
 );
@@ -31,11 +30,7 @@ app.use(cookieParser());
 
 const port = Number(process.env.PORT) || 3000;
 
-// Connect to MongoDB (optional error handling)
-mongoose
-  .connect(process.env.MONGO as string)
-  .then(() => console.log("✅ MongoDB connected"))
-  .catch((err) => console.error(" MongoDB connection error:", err));
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
@@ -44,6 +39,13 @@ app.listen(port, () => {
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/note", noteRoutes);
+
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('/*splat', (req, res) => { 
+  res.sendFile(path.join(__dirname, 'client','dist','index.html'));
+});
 
 // Global error handler
 app.use(

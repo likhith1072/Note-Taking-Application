@@ -7,8 +7,8 @@
     // Environment Settings
     "module": "CommonJS",
     "target": "ES2020",
-    "lib": ["esnext"],
-    "types": ["node"],
+    // "lib": ["esnext"],
+    "types": [""],
 
     // Other Outputs
     "sourceMap": true,

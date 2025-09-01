@@ -2,7 +2,8 @@
   "name": "note-taking-application",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "commonjs",
+  "main": "dist/index.js",
 "scripts": {
   "dev": "nodemon --exec ts-node api/index.ts",
   "build": "npm run install:server && npm run build:server && npm run build:client",

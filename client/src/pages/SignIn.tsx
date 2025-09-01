@@ -10,7 +10,7 @@ export default function SigninPage() {
   const [keepMeLoggedIn, setKeepMeLoggedIn] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
   const navigate = useNavigate();
-  const { user, setUser } = useUser();
+  const { setUser } = useUser();
   // const { signin, setSignin, resetSignin } = useSignin();
 
   const [email, setEmail] = useState<string>("");

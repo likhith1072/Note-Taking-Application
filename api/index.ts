@@ -11,8 +11,8 @@ import path from 'path';
 dotenv.config();
 
 mongoose.connect(process.env.MONGO as string).then(()=>{console.log('Connected to mongoDB');}).catch((err)=>{console.log(err);}); 
-
-const __dirname = path.resolve();
+ 
+// const __dirname = path.resolve(); 
 const app=express();
 const origin = process.env.NODE_ENV === 'production'
   ? 'FrontendWebsiteLink'

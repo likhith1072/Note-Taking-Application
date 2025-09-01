@@ -3,6 +3,7 @@ import {
   signup,
   sendOTP,
   signin,
+  google
 } from "../controllers/auth.controller"; // keep `.js` in imports when using ES modules
 
 const router = express.Router();
@@ -11,5 +12,6 @@ const router = express.Router();
 router.post("/signup", signup);
 router.post("/send-otp", sendOTP);
 router.post("/signin", signin);
+router.post('/google',google);
 
 export default router;

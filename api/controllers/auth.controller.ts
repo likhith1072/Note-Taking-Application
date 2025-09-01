@@ -136,7 +136,7 @@ export const signin = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const { otp, email } = req.body as { otp: string; email: string };
+  const { otp, email, keepMeLoggedIn } = req.body as { otp: string; email: string; keepMeLoggedIn: boolean };
 
   if (!email || !otp) {
     res.json({ success: false, message: "Missing details" });
@@ -166,11 +166,12 @@ export const signin = async (
     user.verifyOtpExpireAt = 0;
     await user.save();
 
+
     // Create JWT
     const token = jwt.sign(
       { id: user._id, name: user.username, email: user.email },
       process.env.JWT_SECRET as string,
-      { expiresIn: "1d" }
+      { expiresIn: keepMeLoggedIn ? "7d" : "1d" }
     );
 
     // Clean user object
@@ -195,3 +196,64 @@ export const signin = async (
   }
 };
 
+
+
+export const google = async (req: Request, res: Response, next: NextFunction) => {
+  const { username, email } = req.body;
+
+  try {
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      // Create new user with provided fields
+      user = new User({
+        username, // duplicates are allowed in your schema
+        email,
+      });
+
+      await user.save();
+    }
+
+    // Generate JWT
+    const token = jwt.sign(
+      { id: user._id, email: user.email, name: user.username },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "7d" } // optional expiry
+    );
+
+    // Only return safe fields
+    const { _id } = user;
+
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      })
+      .status(200)
+      .json({
+        success: true,
+        rest: { _id, username: user.username, email: user.email },
+      });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+
+
+export const signout = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    res
+      .clearCookie("access_token", {
+        httpOnly: true, // protects from XSS
+        secure: process.env.NODE_ENV === "production", // only over HTTPS in prod
+        sameSite: "strict", // CSRF protection
+      })
+      .status(200)
+      .json({ success: true, message: "User has been signed out" });
+  } catch (error) {
+    next(error);
+  }
+};

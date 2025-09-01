@@ -25,7 +25,6 @@ const userSchema: Schema<IUser> = new Schema(
     },
     dob: {
       type: String,
-      required: true,
     },
     verifyOtp: {
       type: String,

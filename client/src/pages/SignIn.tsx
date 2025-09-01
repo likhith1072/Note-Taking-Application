@@ -3,45 +3,48 @@ import { toast } from 'react-toastify';
 import { useUser } from "../context/UserContext";
 // import { useSignin } from "../context/SigninContext";
 import { Link, useNavigate } from "react-router-dom";
-
+import OAuth from '../components/OAuth.tsx';
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 export default function SigninPage() {
+  const [keepMeLoggedIn, setKeepMeLoggedIn] = useState(false);
+  const [showOTP, setShowOTP] = useState(false);
   const navigate = useNavigate();
   const { user, setUser } = useUser();
   // const { signin, setSignin, resetSignin } = useSignin();
 
   const [email, setEmail] = useState<string>("");
-  const [verifyingEmail, setVerifyingEmail] = useState<boolean>( false);
+  const [verifyingEmail, setVerifyingEmail] = useState<boolean>(false);
   const [OTP, setOTP] = useState<string>("");
 
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleResendOTP = async (e: React.MouseEvent) => {
     e.preventDefault();
-      if (!email) {
-        return toast.error("Please fill out all fields.");
-      }
+    if (!email) {
+      return toast.error("Please fill out all fields.");
+    }
 
-      const response = await fetch("/api/auth/send-otp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ email }),
-      });
+    const response = await fetch("/api/auth/send-otp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ email }),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (data.success) {
-        toast.success("Please verify using OTP.");
-   
-      } else {
-        toast.error(data.message);
- 
-      }
+    if (data.success) {
+      toast.success("Please verify using OTP.");
 
-    
+    } else {
+      toast.error(data.message);
+
+    }
+
+
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -56,7 +59,7 @@ export default function SigninPage() {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ email, otp: OTP }), // ✅ lowercase "otp"
+        body: JSON.stringify({ email, otp: OTP, keepMeLoggedIn }), 
       });
 
       const data = await response.json();
@@ -66,7 +69,7 @@ export default function SigninPage() {
         setUser({ id: data.rest._id, username: data.rest.username, email: data.rest.email, dob: data.rest.dob }); // ✅ use full user object
         console.log(data)
         setVerifyingEmail(false);
-        
+
         setLoading(false);
         navigate("/");
       } else {
@@ -93,7 +96,7 @@ export default function SigninPage() {
       if (data.success) {
         toast.success("Please verify using OTP.");
         setVerifyingEmail(true);
-       
+
         setLoading(false);
       } else {
         toast.error(data.message);
@@ -153,7 +156,7 @@ export default function SigninPage() {
             {verifyingEmail && (<>
               <div className="relative">
                 <input
-                  type='numeric'
+                  type={showOTP ? "numeric" : "password"}
                   id="otp"
                   placeholder="OTP"
                   value={OTP}
@@ -171,14 +174,37 @@ export default function SigninPage() {
                 >
                   OTP
                 </label>
-              </div>
+                {/* Eye Icon */}
+                <button
+                  type="button"
+                  onClick={() => setShowOTP((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-900"
+                >
+                  {showOTP ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+                </button>
+                </div>
 
-             <button className="text-blue-500 hover:underline hover:text-blue-600" onClick={handleResendOTP}
-            >
-              resend OTP
-            </button>
+                <div className="flex flex-col items-start gap-2">
+                  <button className="text-blue-500 hover:underline hover:text-blue-700 underline cursor-pointer" onClick={handleResendOTP}
+                  >
+                    Resend OTP
+                  </button>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="box1"
+                      checked={keepMeLoggedIn}
+                      onChange={(e) => setKeepMeLoggedIn(e.target.checked)}
+                      className="cursor-pointer w-4 h-4 "
+                    />
+                    <label htmlFor="box1" className="cursor-pointer ">
+                      Keep me logged in
+                    </label>
+                  </div>
+
+                </div>
+
             </>
-
 
             )
             }
@@ -194,6 +220,7 @@ export default function SigninPage() {
             >
               {verifyingEmail ? "Sign In" : "Get OTP"}
             </button>
+            <div className="flex justify-center items-center"><OAuth /></div>
           </form>
 
 

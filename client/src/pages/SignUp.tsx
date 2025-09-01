@@ -2,9 +2,12 @@ import { useState } from "react";
 import { toast } from 'react-toastify';
 import { useUser } from "../context/UserContext";
 import { Link, useNavigate } from "react-router-dom";
-
+import OAuth from '../components/OAuth.tsx';
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 export default function SignupPage() {
+
+  const [showOTP, setShowOTP] = useState(false);
      const navigate = useNavigate();
       const { user, setUser } = useUser();
 
@@ -28,7 +31,7 @@ export default function SignupPage() {
                 "Content-Type": "application/json",
             },
             credentials: "include",
-            body: JSON.stringify({ email, otp: OTP }), // ✅ lowercase "otp"
+            body: JSON.stringify({ email, otp: OTP, keepMeLoggedIn:false }), // ✅ lowercase "otp"
         });
 
         const data = await response.json();
@@ -173,7 +176,7 @@ export default function SignupPage() {
                         {verifyingEmail && (
                             <div className="relative">
                                 <input
-                                    type='numeric'
+                                     type={showOTP ? "numeric" : "password"}
                                     id="otp"
                                     placeholder="OTP"
                                     value={OTP}
@@ -191,6 +194,14 @@ export default function SignupPage() {
                                 >
                                     OTP
                                 </label>
+                                  {/* Eye Icon */}
+                <button
+                  type="button"
+                  onClick={() => setShowOTP((prev) => !prev)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-600 hover:text-gray-900"
+                >
+                  {showOTP ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
+                </button>
                             </div>
                         )
                         }
@@ -206,6 +217,8 @@ export default function SignupPage() {
                         >
                             {verifyingEmail ? "Sign Up" : "Get OTP"}
                         </button>
+                        <div className="flex justify-center items-center"><OAuth /></div>
+                        
                     </form>
 
 

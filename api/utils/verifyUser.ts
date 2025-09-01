@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import type { JwtPayload ,VerifyErrors } from "jsonwebtoken";
 import type { Request, Response, NextFunction } from "express";
-import { errorHandler } from "./error.js";
+import { errorHandler } from "./error";
 
 // Extend Express Request to include user
 export interface AuthRequest extends Request {

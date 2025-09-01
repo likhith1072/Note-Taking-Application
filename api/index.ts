@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import authRoutes from "./routes/auth.route"; // remove `.ts` when importing
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import noteRoutes from "./routes/note.route"; 
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.listen(port, () => {
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/note", noteRoutes);
 
 // Global error handler
 app.use(

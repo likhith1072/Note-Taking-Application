@@ -52,7 +52,7 @@ function Header() {
 
         {user?.id ? (
         
-                            <div className=' h-10 w-20  bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-1 rounded-md px-2 text-red-400 text-sm sm:text-md font-semibold cursor-pointer flex justify-center items-center' onClick={()=>{resetUser(); handleSignOut();}}>Sign Out</div>
+                            <div className=' h-10 w-20  bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-1 rounded-md px-2 text-white text-sm sm:text-md font-semibold cursor-pointer flex justify-center items-center' onClick={()=>{resetUser(); handleSignOut();}}>Sign Out</div>
         ) : (
           <Link to='/signup'>
                             <div className=' h-10 w-20  bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-1 rounded-md px-2 text-white text-sm sm:text-md font-semibold cursor-pointer flex justify-center items-center'>Sign Up</div></Link>

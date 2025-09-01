@@ -2,7 +2,8 @@ import { useState } from "react";
 import { toast } from 'react-toastify';
 import { useUser } from "../context/UserContext";
 import { useSignup } from "../context/SignupContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 
 export default function SignupPage() {
      const navigate = useNavigate();
@@ -18,30 +19,66 @@ export default function SignupPage() {
 
    const [loading,setLoading]=useState<boolean>(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (verifyingEmail) {
-            navigate("/");
-            const payload = { email, OTP };
-            console.log("Verify OTP payload:", payload);
-            setVerifyingEmail(false);
-            // send to backend for verifying email
-            setUser({ id: "123", name: name, email: email, dob: dob });
-            // resetSignup();
-        }
-        else {
-            navigate("/")
-            if(!name || !dob || !email){
-                return toast.error('Please fill out all fields.');
-            }
-            const payload = { name, dob, email };
-            console.log("Sign Up payload:", payload);
-            setVerifyingEmail(true);
-            setSignup({name,dob,email,verifyingEmail:true});
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-            // send to backend for SignUp
+    if (verifyingEmail) {
+        setLoading(true);
+        // Verify email with OTP (sign in flow)
+        const response = await fetch("/api/auth/signin", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify({ email, otp: OTP }), // ✅ lowercase "otp"
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            toast.success("OTP verified successfully!");
+            setUser({id:data.rest._id,username:data.rest.username,email:data.rest.email,dob:data.rest.dob }); // ✅ use full user object
+            console.log(data)
+            setVerifyingEmail(false);
+            resetSignup();
+            setLoading(false);
+            navigate("/");
+        } else {
+            toast.error(data.message);
+        }
+    } else {
+        setLoading(true);
+        if (!name || !dob || !email) {
+            setLoading(false);
+            return toast.error("Please fill out all fields.");
+        }
+
+        const payload = { name, dob, email };
+
+        const response = await fetch("/api/auth/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(payload),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            toast.success("Sign up successful, please verify using OTP.");
+            setVerifyingEmail(true);
+            setSignup({ name, dob, email, verifyingEmail: true });
+            setLoading(false);
+        } else {
+            toast.error(data.message);
+            setLoading(false);
         }
     }
+};
+
 
     return (
         <div className="min-h-screen flex items-center justify-center w-full ">
@@ -168,7 +205,9 @@ export default function SignupPage() {
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            className="w-full bg-blue-500 text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-blue-600 transition"
+                            className={`w-full bg-blue-500 text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-blue-600 transition
+                            ${loading && "opacity-50 cursor-not-allowed"}`}
+                            disabled={loading}
                         >
                             {verifyingEmail ? "Sign Up" : "Get OTP"}
                         </button>
@@ -176,10 +215,10 @@ export default function SignupPage() {
 
 
                     <p className="mt-6 text-sm text-gray-600 text-center">
-                        Already have an account??{" "}
-                        <a href="#" className="text-blue-500 hover:underline">
+                        Already have an account?{" "}
+                        <Link to="/signin" className="text-blue-500 hover:underline hover:text-blue-600">
                             Sign in
-                        </a>
+                        </Link>
                     </p>
                 </div>
 

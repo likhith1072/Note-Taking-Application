@@ -1,13 +1,12 @@
-import { useSignup } from "../context/SignupContext";
 import {useUser} from "../context/UserContext";
 
 function Home() {
-    const { signup } = useSignup();
-    const { user } = useUser();
+    const { user, resetUser } = useUser();
 
   return (
     <div>
-      <h1 className="text-3xl font-bold">Home Page {signup.name}{user!.id}</h1>
+      <h1 className="text-3xl font-bold">Home Page {user?.id}{user?.username}{user?.dob} {user?.email}</h1>
+     <button onClick={resetUser}>SignOut</button>
     </div>
   )
 }

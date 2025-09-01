@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 
 interface UserData {
   id: string;
-  name: string;
+  username: string;
   email: string;
   dob: string;
 }
@@ -19,7 +19,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUserState] = useState<UserData | null>(() => {
     // Load from localStorage on first render
     const storedUser = localStorage.getItem("userData");
-    return storedUser ? JSON.parse(storedUser) : {id:"", name: "", dob: "", email: ""};
+    return storedUser ? JSON.parse(storedUser) : {id:"", username: "", dob: "", email: ""};
   });
 
 
@@ -35,6 +35,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const setUser = (user: UserData | null) => {
     setUserState(user);
+    localStorage.removeItem("userData");
   };
 
   const resetUser = () => {

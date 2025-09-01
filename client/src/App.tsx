@@ -4,6 +4,7 @@ import Home from './pages/Home.tsx'
 import SignIn from './pages/SignIn.tsx'
 import SignUp from './pages/SignUp.tsx'
 import { ToastContainer} from 'react-toastify';
+import { AuthRedirect } from "./AuthRedirect.tsx";
 
 
 
@@ -13,8 +14,10 @@ export default function App() {
       <ToastContainer />    
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
+         <Route element={<AuthRedirect />}>
+    <Route path="/signin" element={<SignIn />} />
+    <Route path="/signup" element={<SignUp />} />
+  </Route>
       </Routes>
     </BrowserRouter>
   )

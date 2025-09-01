@@ -11,8 +11,8 @@ import path from 'path';
 dotenv.config();
 
 mongoose.connect(process.env.MONGO as string).then(()=>{console.log('Connected to mongoDB');}).catch((err)=>{console.log(err);}); 
- 
-// const __dirname = path.resolve(); 
+
+const __dirnamee = path.resolve(); 
 const app=express();
 const origin = process.env.NODE_ENV === 'production'
   ? 'FrontendWebsiteLink'
@@ -41,10 +41,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/note", noteRoutes);
 
 
-app.use(express.static(path.join(__dirname, '/client/dist')));
+app.use(express.static(path.join(__dirnamee, '/client/dist')));
 
 app.get('/*splat', (req, res) => { 
-  res.sendFile(path.join(__dirname, 'client','dist','index.html'));
+  res.sendFile(path.join(__dirnamee, 'client','dist','index.html'));
 });
 
 // Global error handler

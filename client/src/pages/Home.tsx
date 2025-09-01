@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { FiTrash2 } from "react-icons/fi";
@@ -17,7 +17,7 @@ interface NotesResponse {
 }
 
 export default function Dashboard() {
-  const { user, resetUser } = useUser();
+  const { user } = useUser();
   const [notes, setNotes] = useState<Note[]>([]);
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);

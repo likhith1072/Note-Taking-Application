@@ -9,7 +9,7 @@ export default function SignupPage() {
 
   const [showOTP, setShowOTP] = useState(false);
      const navigate = useNavigate();
-      const { user, setUser } = useUser();
+      const { setUser } = useUser();
 
     const [name, setName] = useState<string>("");
     const [dob, setDob] = useState<string>("");

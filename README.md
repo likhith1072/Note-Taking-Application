@@ -2,7 +2,7 @@
 
 A full-stack **MERN + TypeScript** note-taking app with authentication, built using:
 
-- **Backend:** Node.js, Express, TypeScript, MongoDB, JWT, Bcrypt  
+- **Backend:** Node.js, Express, TypeScript, MongoDB, JWT, nodemailer(SMTP) for Email OTP
 - **Frontend:** React + Vite + TypeScript  
 - **Deployment:** Render (server + client in same repo)
 

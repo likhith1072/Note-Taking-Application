@@ -1,20 +1,17 @@
 import { useState } from "react";
 import { toast } from 'react-toastify';
 import { useUser } from "../context/UserContext";
-import { useSignup } from "../context/SignupContext";
 import { Link, useNavigate } from "react-router-dom";
 
 
 export default function SignupPage() {
      const navigate = useNavigate();
       const { user, setUser } = useUser();
-  const { signup, setSignup, resetSignup } = useSignup();
 
-
-    const [name, setName] = useState<string>(signup.name || "");
-    const [dob, setDob] = useState<string>(signup.dob || "");
-    const [email, setEmail] = useState<string>(signup.email || "");
-    const [verifyingEmail, setVerifyingEmail] = useState<boolean>(signup.verifyingEmail || false);
+    const [name, setName] = useState<string>("");
+    const [dob, setDob] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [verifyingEmail, setVerifyingEmail] = useState<boolean>(false);
     const [OTP, setOTP] = useState<string>("");
 
    const [loading,setLoading]=useState<boolean>(false);
@@ -41,7 +38,6 @@ export default function SignupPage() {
             setUser({id:data.rest._id,username:data.rest.username,email:data.rest.email,dob:data.rest.dob }); // ✅ use full user object
             console.log(data)
             setVerifyingEmail(false);
-            resetSignup();
             setLoading(false);
             navigate("/");
         } else {
@@ -70,7 +66,6 @@ export default function SignupPage() {
         if (data.success) {
             toast.success("Sign up successful, please verify using OTP.");
             setVerifyingEmail(true);
-            setSignup({ name, dob, email, verifyingEmail: true });
             setLoading(false);
         } else {
             toast.error(data.message);
@@ -205,8 +200,8 @@ export default function SignupPage() {
                         {/* Submit Button */}
                         <button
                             type="submit"
-                            className={`w-full bg-blue-500 text-white py-2 rounded-lg font-semibold cursor-pointer hover:bg-blue-600 transition
-                            ${loading && "opacity-50 cursor-not-allowed"}`}
+                            className={`w-full bg-blue-500 text-white py-2 rounded-lg font-semibold  hover:bg-blue-600 transition
+                            ${loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                             disabled={loading}
                         >
                             {verifyingEmail ? "Sign Up" : "Get OTP"}

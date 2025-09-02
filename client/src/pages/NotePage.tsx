@@ -85,7 +85,8 @@ const NotePage = () => {
            <div className="flex flex-col w-screen border-t border-gray-300 h-[80vh]">  
    
    <div className="w-full flex justify-between items-center px-5 pt-1">
-    <div><input type='checkbox' id='edit' checked={editable} onChange={(e) => setEditable(e.target.checked)} className="w-4 h-4" />
+    <div className="flex justify-center items-center gap-2">
+      <input type='checkbox' id='edit' checked={editable} onChange={(e) => setEditable(e.target.checked)} className="w-4 h-4" />
             <label htmlFor='edit' className="text-md text-gray-800 font-semibold">Edit Mode</label></div>
             
 

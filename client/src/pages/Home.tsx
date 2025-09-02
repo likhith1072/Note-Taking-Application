@@ -56,7 +56,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col w-full">
+    <div className="min-h-dvh flex flex-col w-full">
       {/* Top Navbar */}
       <Header />
       {/* Main Content */}
@@ -69,7 +69,7 @@ export default function Dashboard() {
                 <h2 className="font-bold text-lg">
                   Welcome, {user.username} !
                 </h2>
-                <p className="text-gray-600 text-sm"><span className="font-semibold">Email:</span> {user.email}</p>
+                <p className="text-gray-600 text-sm overflow-x-auto"><span className="font-semibold">Email:</span> {user.email}</p>
               </div>
 
               {/* Create Note Button */}

@@ -16,7 +16,7 @@ interface NotesResponse {
   notes: Note[];
 }
 
-export default function Dashboard() {
+export default function Home() {
   const { user } = useUser();
   const [notes, setNotes] = useState<Note[]>([]);
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export default function Dashboard() {
   const [noteToDelete, setNoteToDelete] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!user) return;
+  
 
     const fetchNotes = async () => {
       try {

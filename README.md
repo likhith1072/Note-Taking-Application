@@ -35,14 +35,14 @@ A full-stack **MERN + TypeScript** note-taking app with authentication, built us
 
 
 
-## ⚙️ Setup & Installation
+**## ⚙️ Setup & Installation**
 
-### 1️⃣ Clone repo
+### **1️⃣ Clone repo**
 
 git clone https://github.com/likhith1072/Note-Taking-Application.git
 cd Note-Taking-Application
 
-2️⃣ Install dependencies
+2️⃣** Install dependencies**
 
 # install backend deps
 npm install
@@ -50,7 +50,7 @@ npm install
 # install frontend deps
 npm install --prefix client
 
-3️⃣ Environment variables
+**3️⃣ Environment variables**
 
 Create a .env file in the root:
 MONGO=mongodb+srv://<your-cluster>/<dbname>
@@ -60,6 +60,9 @@ NODE_ENV=development
 SMTP_USER=<your smtp user >
 SMTP_PASS=<your smtp password>
 SENDER_EMIAL=<your email>
+
+Create a .env file in the client:
+VITE_FIREBASE_API_KEY=<your firebase apikey>
 
 **🛠️ Development**
 

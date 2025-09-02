@@ -55,7 +55,7 @@ function Header() {
         {user?.id ? (
 
                             <button className={`h-10 w-20  bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-1 rounded-md px-2 text-white text-sm sm:text-md font-semibold  flex justify-center items-center ${loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`} onClick={() => { handleSignOut(); }}
-                            disabled={loading}>{loading ? "Signing Out..." : "Sign Out"}</button>
+                            disabled={loading}>"Sign Out"</button>
         ) : (
           <Link to='/signup'>
             <div className=' h-10 w-20  bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-1 rounded-md px-2 text-white text-sm sm:text-md font-semibold cursor-pointer flex justify-center items-center'>Sign Up</div>

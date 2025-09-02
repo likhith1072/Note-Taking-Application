@@ -1,12 +1,12 @@
-
+import { useState } from "react";
 import { useUser } from "../context/UserContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 function Header() {
   const { user, resetUser } = useUser();
-  const navigate = useNavigate();
-   const location = useLocation();
+  const location = useLocation();
+  const [loading, setLoading] = useState(false);
 
   const getHeaderTitle = (): string => {
     switch (location.pathname) {
@@ -21,16 +21,18 @@ function Header() {
 
   const handleSignOut = async () => {
     try {
+      setLoading(true);
       const res = await fetch("/api/auth/signout", {
         method: "POST",
         credentials: "include",
       });
       if (res.ok) {
-        
-        navigate("/signin");
+        resetUser();
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error signing out:", error);
+      setLoading(false);
     }
   };
 
@@ -51,11 +53,13 @@ function Header() {
         </div>
 
         {user?.id ? (
-        
-                            <div className=' h-10 w-20  bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-1 rounded-md px-2 text-white text-sm sm:text-md font-semibold cursor-pointer flex justify-center items-center' onClick={()=>{resetUser(); handleSignOut();}}>Sign Out</div>
+
+                            <button className={`h-10 w-20  bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-1 rounded-md px-2 text-white text-sm sm:text-md font-semibold  flex justify-center items-center ${loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`} onClick={() => { handleSignOut(); }}
+                            disabled={loading}>{loading ? "Signing Out..." : "Sign Out"}</button>
         ) : (
           <Link to='/signup'>
-                            <div className=' h-10 w-20  bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-1 rounded-md px-2 text-white text-sm sm:text-md font-semibold cursor-pointer flex justify-center items-center'>Sign Up</div></Link>
+            <div className=' h-10 w-20  bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 border-1 rounded-md px-2 text-white text-sm sm:text-md font-semibold cursor-pointer flex justify-center items-center'>Sign Up</div>
+          </Link>
         )}
       </div>
   )

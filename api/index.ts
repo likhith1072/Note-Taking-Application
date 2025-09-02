@@ -15,7 +15,7 @@ mongoose.connect(process.env.MONGO as string).then(()=>{console.log('Connected t
 const __dirnamee = path.resolve(); 
 const app=express();
 const origin = process.env.NODE_ENV === 'production'
-  ? 'FrontendWebsiteLink'
+  ? 'https://note-taking-application-0l99.onrender.com/' //requrired in production if frontend and backend are deployed in different domains but in our case it is not compulsory because we are deploying backend and forntend are in same domain
   : 'http://localhost:5173';
 
 app.use(

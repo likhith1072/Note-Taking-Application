@@ -40,15 +40,6 @@ export default function Home() {
 
     fetchNotes();
 
-  // 👇 listen for tab focus / visibility change mainly for mobile browsers
-  const handleVisibility = () => {
-    if (document.visibilityState === "visible") {
-      fetchNotes();
-    }
-  };
-
-  document.addEventListener("visibilitychange", handleVisibility);
-  return () => document.removeEventListener("visibilitychange", handleVisibility);
   }, []);
 
   const handleDelete = async (id: string) => {

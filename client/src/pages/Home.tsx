@@ -25,7 +25,6 @@ export default function Home() {
 
   useEffect(() => {
   
-
     const fetchNotes = async () => {
       try {
         const res = await fetch("/api/note/getnotes", { credentials: "include" });

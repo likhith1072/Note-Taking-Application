@@ -178,6 +178,7 @@ export const signin = async (
     const userObj = user.toObject();
     userObj.verifyOtp = "";
 
+    const maxAge = keepMeLoggedIn ? 7 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
 
     res
       .status(200)
@@ -185,7 +186,7 @@ export const signin = async (
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
+        maxAge: maxAge,
       })
       .json({
         success: true,
@@ -218,17 +219,20 @@ export const google = async (req: Request, res: Response, next: NextFunction) =>
     const token = jwt.sign(
       { id: user._id, email: user.email, name: user.username },
       process.env.JWT_SECRET as string,
-      { expiresIn: "7d" } // optional expiry
+      { expiresIn: "1d" }
     );
 
     // Only return safe fields
     const { _id } = user;
+        const maxAge = 7 * 24 * 60 * 60 * 1000;
+
 
     res
       .cookie("access_token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
+        maxAge: maxAge,
       })
       .status(200)
       .json({

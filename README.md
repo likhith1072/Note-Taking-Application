@@ -18,7 +18,7 @@ A full-stack **MERN + TypeScript** note-taking app with authentication, built us
 ---
 
 ## 📂 Project Structure
-
+```
 ├── api/ # Backend (Express + TS)
 │ ├── routes/ # API routes
 │ ├── models/ # Mongoose models
@@ -32,27 +32,32 @@ A full-stack **MERN + TypeScript** note-taking app with authentication, built us
 ├── package.json
 ├── tsconfig.json
 └── README.md
-
+```
 
 
 **## ⚙️ Setup & Installation**
 
 ### **1️⃣ Clone repo**
-
+```
 git clone https://github.com/likhith1072/Note-Taking-Application.git
 cd Note-Taking-Application
-
+```
 2️⃣** Install dependencies**
 
 # install backend deps
+```
 npm install
+```
 
 # install frontend deps
+```
 npm install --prefix client
+```
 
 **3️⃣ Environment variables**
 
 Create a .env file in the root:
+```
 MONGO=mongodb+srv://<your-cluster>/<dbname>
 JWT_SECRET=your_jwt_secret
 PORT=3000
@@ -60,26 +65,34 @@ NODE_ENV=development
 SMTP_USER=<your smtp user >
 SMTP_PASS=<your smtp password>
 SENDER_EMIAL=<your email>
+```
 
 Create a .env file in the client:
+```
 VITE_FIREBASE_API_KEY=<your firebase apikey>
+```
 
 **🛠️ Development**
 
 Run server + client separately:
 
 # Run backend (with ts-node + nodemon)
+```
 npm run dev
+```
 
 # Run frontend
+```
 cd client
 npm run dev
+```
 
 **📦 Build & Production**
 
 **To build both server and client:
-npm run build**
-
+```
+npm run build
+```
 This will:
 
 Compile TypeScript (api/ → dist/)
@@ -130,12 +143,14 @@ Connect repo to Render
 Add Environment Variables (from .env) in Render dashboard
 
 Build command:
-
+```
 npm run build
+```
 
 Start command:
-
+```
 npm start
+```
 
 ** App will be live at:**
 
